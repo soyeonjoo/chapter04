@@ -1,15 +1,17 @@
 package kr.ac.sungkyul.network.echo;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 
-public class EchoServer {
+public class EchoServer2 {
 
 	private final static int PORT_NUM = 5000;
 
@@ -29,27 +31,26 @@ public class EchoServer {
 																						// 포트넘버를
 																						// 합쳐주는
 																						// 주소
-			serverSocket.bind(socketaddress); //이 소켓은 연결하는 소켓 
+			serverSocket.bind(socketaddress); // 이 소켓은 연결하는 소켓
 
 			// 3. accept 클라이언트로 부터 연결(요청)대기
-			Socket socket = serverSocket.accept(); //데이터 통신하는 소켓
+			Socket socket = serverSocket.accept(); // 데이터 통신하는 소켓
 
 			
-				// 4. 연결 성공
-				try {
-					while (true) {
-					// 5. IOStream
-					InputStream is = socket.getInputStream();
-					OutputStream os = socket.getOutputStream();
-
+			// 4. 연결 성공
+				// 5. IOStream
+				BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				PrintWriter pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+				String data = null;
+				
+				while (true) {
+					
 					// 6. 데이터읽기
-					byte[] buffer = new byte[256];
-					int readByte = is.read(buffer);
-					if (readByte <= -1) {
+				    data = br.readLine();//보낼때는 개행을 붙여서 보내고 받을때는 개행을 때서..
+					if (data == null) {
 						System.out.println("[server] closed by client");
 						return;
 					}
-					String data = new String(buffer, 0, readByte, "utf-8");
 					if (data.equals("quit")) {
 						System.out.println(" 종료합니다.");
 						break;
@@ -58,19 +59,16 @@ public class EchoServer {
 					System.out.println(">>" + data);
 
 					// 7. 데이터 쓰기
-					os.write(data.getBytes("utf-8"));
+					pw.println(data);
+					 pw.flush();
 				}
-			} catch (SocketException e) {
+		}		
+			 catch (SocketException e) {
 				e.printStackTrace();
-			} finally {
-				if (socket != null && socket.isClosed() == false) {
-					socket.close();
-				}
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
+			} catch (IOException e) {
+				e.printStackTrace();
+			} 
+		 finally {
 			try {
 				if (serverSocket != null && serverSocket.isClosed() == false) {
 
