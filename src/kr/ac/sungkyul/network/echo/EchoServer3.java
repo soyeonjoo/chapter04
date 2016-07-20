@@ -24,12 +24,12 @@ public class EchoServer3 {
 			serverSocket.bind(inetsocketaddress);
 
 			System.out.println("[echo server]binding" + address + ":" + SERVER_PORT);
-
+		
 			while (true) {
 				// 3.연결
 				Socket socket = serverSocket.accept();
 				
-				EchoServer3ReceiveThread().
+				EchoServer3ReceiveThread thread = new EchoServer3ReceiveThread(socket);
 				thread.start();
 				
 			}
@@ -38,7 +38,8 @@ public class EchoServer3 {
 			e.printStackTrace();
 		} finally {
 			try {
-				serverSocket.close();
+				if(serverSocket !=null && serverSocket.isClosed()== false){
+				serverSocket.close();}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

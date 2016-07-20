@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class EchoClient {
 	private final static String SERVER_IP = "220.67.115.228";
-	private final static int PORT_NUM = 5000;
+	private final static int PORT_NUM = 3000;
 
 	public static void main(String[] args) {
 		Socket socket = null;

@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 public class EchoClient2 {
 	private final static String SERVER_IP = "220.67.115.228";
-	private final static int PORT_NUM = 5000;
+	private final static int PORT_NUM = 3000;
 
 	public static void main(String[] args) {
 		Socket socket = null;
@@ -41,7 +41,6 @@ public class EchoClient2 {
 				data = scanner.nextLine();
 				
 				//5. 데이터 읽기
-//				data = br.readLine(); 
 				if (data == null) {
 					System.out.println("[celient] close by server  ");
 				}
