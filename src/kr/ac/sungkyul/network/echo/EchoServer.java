@@ -24,6 +24,10 @@ public class EchoServer {
 			String address = inetAddresses.getHostAddress();
 			System.out.println("[server]: " + address + "[port]:" + PORT_NUM);
 
+			//Time-wait 상태에서 포트 재할당을 가능하게 하기 위하여
+			serverSocket.setReuseAddress(true);
+			
+			
 			// 2. 바인딩 - 서버의 ip주소와 port를 바인딩
 			InetSocketAddress socketaddress = new InetSocketAddress(address, PORT_NUM);// ip와
 																						// 포트넘버를
